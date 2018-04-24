@@ -8,7 +8,7 @@ namespace PrimeFac
         public static BigInteger PollardRho(BigInteger n)//TODO : set cycle limit, figure out how this work
         {
             BigInteger x_fixed = 2, cycle_size = 2, x = 2, factor = 1;
-    
+
             while (factor == 1)
             {
                 for (int count = 1; count <= cycle_size && factor <= 1; count++)
@@ -47,31 +47,32 @@ namespace PrimeFac
         /// <param name="limit">Loop Limit</param>
         /// <param name="result">Return one of prime</param>
         /// <returns>Return that was successful attack</returns>
-        public static bool Fermat(BigInteger n,out BigInteger result, int limit = 10000)
+        public static bool Fermat(BigInteger n, out BigInteger result, int limit = 10000)
         {
-            BigInteger a,max,b,b2;
-            Util.isqrt(n,out a);
-            max = a + limit;
-            while (a < max)
+            BigInteger x, y, w;
+            Util.isqrt(n, out x);
+            x += 1;
+            Util.isqrt(x * x - n, out y);
+            while (limit>0)
             {
-                b2 = a * a - n;
-                if (b2 >= 0)
-                {
-                    Util.isqrt(b2, out b);
-                    if(b*b == b2)
-                    {
-                        break;
-                    }
-                }
-                a += 1;
+                w = (x * x) - n - (y * y);
+                if (w == 0)
+                    break;
+                if (w > 0)
+                    y += 1;
+                else
+                    x += 1;
+                limit--;
             }
-            if (a < max)
+            if (limit != 0)
             {
-                result = a - b;
+                result = x - y;
                 return true;
             }
             else
+            {
                 return false;
+            }
         }
     }
 }

@@ -46,6 +46,13 @@ namespace PrimeFac
         [TestMethod]
         public void FermatTest3()
         {
+            BigInteger n = new BigInteger(204791) * 0x10001,k;
+            PrimeFac.Fermat(n, out k,100000);
+            Assert.AreEqual(0x10001,k);
+        }
+        [TestMethod]
+        public void FermatTestTimeout()
+        {
             using (RSA rsa = RSA.Create(512))
             {
                 var key = rsa.ExportParameters(true);
