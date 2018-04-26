@@ -8,63 +8,90 @@ namespace PrimeFac
     [TestClass]
     public class UnitTest1
     {
+        public BigInteger p1 = 101, p2 = 103,
+            p3 = 0x10001, p4 = 204791,
+            p5 = 32416188583, p6 = 32416189919,
+            n1, n2, n3;
+        [TestInitialize]
+        public void Init()
+        {
+            n1 = p1 * p2;
+            n2 = p3 * p4;
+            n3 = p5 * p5;
+        }
         [TestMethod]
         public void PollardRhoTest1()
         {
-            int n = 101 * 103;
-            Assert.AreEqual(101, PrimeFac.PollardRho(n));
+            Assert.AreEqual(p1, PrimeFac.PollardRho(n1));
         }
         [TestMethod]
         public void PollardRhoTest2()
         {
-            BigInteger n = new BigInteger(204791) * 0x10001;
-            Assert.AreEqual(0x10001, PrimeFac.PollardRho(n));
+            Assert.AreEqual(p3, PrimeFac.PollardRho(n2));
         }
         [TestMethod]
         public void PollardRhoTest3()
         {
-            BigInteger n = new BigInteger(204791) * 0x10001, a;
-            PrimeFac.PollardRho(n, out a);
-            Assert.AreEqual(0x10001, a);
+            Assert.AreEqual(p5, PrimeFac.PollardRho(n3));
         }
         [TestMethod]
-        public void PollardRhoTimeoutTest()
+        public void PollardRhoLimitTest1()
         {
-            using (RSA rsa = RSA.Create(512))
-            {
-                var key = rsa.ExportParameters(true);
-                BigInteger n = new BigInteger(key.Modulus), a;
-                Assert.AreEqual(false, PrimeFac.PollardRho(n, out a, 1));
-            }
+            PrimeFac.PollardRho(n2, out BigInteger a);
+            Assert.AreEqual(p3, a);
+        }
+        [TestMethod]
+        public void PollardRhoLimitTimeoutTest()
+        {
+            Assert.AreEqual(false, PrimeFac.PollardRho(n3, out BigInteger a, 1));
         }
         [TestMethod]
         public void FermatTest1()
         {
-            BigInteger n = 97 * 103;
-            Assert.AreEqual(97, PrimeFac.Fermat(n));
+            Assert.AreEqual(p1, PrimeFac.Fermat(n1));
         }
         [TestMethod]
         public void FermatTest2()
         {
-            BigInteger n = new BigInteger(204791) * 0x10001;
-            Assert.AreEqual(0x10001, PrimeFac.Fermat(n));
+            Assert.AreEqual(p3, PrimeFac.Fermat(n2));
         }
-        [TestMethod]
+        //This test will consume super large amount of time
+        //[TestMethod]
         public void FermatTest3()
         {
-            BigInteger n = new BigInteger(204791) * 0x10001, k;
-            PrimeFac.Fermat(n, out k, 100000);
-            Assert.AreEqual(0x10001, k);
+            Assert.AreEqual(p5, PrimeFac.Fermat(n3));
         }
         [TestMethod]
-        public void FermatTimeoutTest()
+        public void FermatLimitTest1()
         {
-            using (RSA rsa = RSA.Create(512))
-            {
-                var key = rsa.ExportParameters(true);
-                BigInteger n = new BigInteger(key.Modulus), a;
-                Assert.AreEqual(false, PrimeFac.Fermat(n, out a, 1));
-            }
+            PrimeFac.Fermat(n2, out BigInteger k, 100000);
+            Assert.AreEqual(p3, k);
+        }
+        [TestMethod]
+        public void FermatLimitTimeoutTest()
+        {
+            Assert.AreEqual(false, PrimeFac.Fermat(n3, out BigInteger a, 1));
+        }
+        [TestMethod]
+        public void BrentTest1()
+        {
+            Assert.AreEqual(p1, PrimeFac.PollardRho_brent(n1));
+        }
+        [TestMethod]
+        public void BrentTest2()
+        {
+            Assert.AreEqual(p3, PrimeFac.PollardRho_brent(n2));
+        }
+        [TestMethod]
+        public void BrentTest3()
+        {
+            Assert.AreEqual(p5, PrimeFac.PollardRho_brent(n3));
+        }
+
+        [TestMethod]
+        public void isqrtspeedTest1()
+        {
+            Assert.AreEqual(Util.isqrt(n3), Util.isqrt(n3));
         }
     }
 }

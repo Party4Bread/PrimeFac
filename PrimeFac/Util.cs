@@ -18,9 +18,25 @@ namespace PrimeFac
             }
             return BigInteger.Abs(x);
         }
-        public static bool isqrt(BigInteger n,out BigInteger result)
+        public static BigInteger isqrt(BigInteger n)
         {
-            if(n==0)
+            if (n == 0)
+            {
+                return 0;
+            }
+            BigInteger x, y;
+            x = n;
+            y = (n + 1) / 2;
+            while (y < x)
+            {
+                x = y;
+                y = (y + n / y) / 2;
+            }
+            return x;
+        }
+        public static bool isqrt_chk(BigInteger n, out BigInteger result)
+        {
+            if (n == 0)
             {
                 result = 0;
                 return true;
