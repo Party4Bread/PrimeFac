@@ -7,6 +7,7 @@ namespace PrimeFac
     public static class PrimeFac
     {
         //TODO: Add isprime before every factor
+        //TODO: Add algo which is not in YAFU
 
         //REF : https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm
         public static BigInteger PollardRho(BigInteger n, int c = 1)
